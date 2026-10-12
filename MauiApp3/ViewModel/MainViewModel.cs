@@ -17,6 +17,8 @@ namespace MauiApp3.ViewModel
         private readonly GetPlayerByIdQueryHandler _getPlayerByIdQueryHandler;
         private readonly GetPlayersQueryHandler _getPlayersQueryHandler;
         private readonly AddPlayerCommandHandler _addPlayerCommandHandler;
+        private readonly DeletePlayerCommandHandler _deletePlayerCommandHandler;
+        private readonly EditPlayerCommandHandler _editPlayerCommandHandler;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -40,18 +42,27 @@ namespace MauiApp3.ViewModel
             }
         }
         public ICommand AddPlayerCommandButton { get; }
+        public ICommand DeletePlayerCommandButton { get; }
         public ICommand FindPlayerCommandButton { get; }
+        public ICommand EditPlayerCommandButton { get;}
         public MainViewModel(
             GetPlayerByIdQueryHandler getPlayerByIdQueryHandler,
             GetPlayersQueryHandler getPlayersQueryHandler,
-            AddPlayerCommandHandler addPlayerCommandHandler)
+            AddPlayerCommandHandler addPlayerCommandHandler,
+            DeletePlayerCommandHandler deletePlayerCommandHandler,
+            EditPlayerCommandHandler editPlayerCommandHandler
+            )
         {
             _getPlayerByIdQueryHandler = getPlayerByIdQueryHandler;
             _getPlayersQueryHandler = getPlayersQueryHandler;
             _addPlayerCommandHandler = addPlayerCommandHandler;
+            _deletePlayerCommandHandler = deletePlayerCommandHandler;
+            _editPlayerCommandHandler = editPlayerCommandHandler;
 
             AddPlayerCommandButton = new Command(AddPlayer);
+            DeletePlayerCommandButton = new Command(DeletePlayer);
             FindPlayerCommandButton = new Command(FindPlayer);
+            EditPlayerCommandButton = new Command(EditPlayer);
 
 
             LoadPlayers();
@@ -67,6 +78,61 @@ namespace MauiApp3.ViewModel
 
             LoadPlayers();
         }
+        private void DeletePlayer()
+        {
+            if(!int.TryParse(PlayerId, out int playerId))
+            {
+                return;
+            }
+            DeletePlayerCommand command = new DeletePlayerCommand(playerId);
+            _deletePlayerCommandHandler.Handle(command);
+
+            LoadPlayers();
+        }
+        private void EditPlayer()
+{
+    // Sprawdzenie Id gracza
+    if (!int.TryParse(PlayerId, out int playerId) || playerId <= 0)
+    {
+        SearchResult = "Podaj poprawne ID gracza.";
+        return;
+    }
+
+    // Sprawdzenie nazwy
+    if (string.IsNullOrWhiteSpace(PlayerName))
+    {
+        SearchResult = "Nazwa gracza nie może być pusta.";
+        return;
+    }
+
+    // Sprawdzenie poziomu
+    if (!int.TryParse(PlayerLevel, out int playerLevel) || playerLevel < 0)
+    {
+        SearchResult = "Podaj poprawny poziom gracza.";
+        return;
+    }
+
+    // Utworzenie polecenia edycji
+    EditPlayerCommand command = new EditPlayerCommand(
+        playerId,
+        PlayerName.Trim(),
+        playerLevel
+    );
+
+    // Przekazanie polecenia do handlera
+    bool updated = _editPlayerCommandHandler.Handle(command);
+
+    if (!updated)
+    {
+        SearchResult = "Nie znaleziono gracza o podanym ID.";
+        return;
+    }
+
+    SearchResult = "Gracz został zaktualizowany.";
+
+    // Odświeżenie listy graczy
+    LoadPlayers();
+}
         private void FindPlayer()
         {
             if (!int.TryParse(PlayerId, out int playerId))

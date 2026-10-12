@@ -22,9 +22,32 @@
                 Text="Dodaj gracza"
                 Command="{Binding AddPlayerCommandButton}" />
             
-            
-            
-            
+            <Label
+                Text="Usuń gracza"
+                FontSize="24"
+                FontAttributes="Bold"/>
+            <Entry
+                Placeholder="Id gracza"
+                Keyboard="Numeric"
+                Text="{Binding PlayerId}"/>
+            <Button
+                Text="Usuń gracza"
+                Command="{Binding DeletePlayerCommandButton}"/>
+
+            <Label
+                Text="Edytuj gracza"
+                FontSize="24"
+                FontAttributes="Bold"/>
+            <Entry
+                Placeholder="Nazwa gracza"
+                Text="{Binding PlayerName}"/>
+            <Entry
+                Placeholder="Poziom gracza"
+                Keyboard="Numeric"
+                Text="{Binding PlayerLevel}"/>
+            <Button
+                Text="Edytuj gracza"
+                Command="{Binding EditPlayerCommandButton}"/>
 
             <Label
                 Text="Lista graczy"

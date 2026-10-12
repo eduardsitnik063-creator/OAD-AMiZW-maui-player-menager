@@ -17,6 +17,8 @@ namespace MauiApp3
             builder.Services.AddTransient<AddPlayerCommandHandler>();
             builder.Services.AddTransient<GetPlayerByIdQueryHandler>();
             builder.Services.AddTransient<GetPlayersQueryHandler>();
+            builder.Services.AddTransient<DeletePlayerCommandHandler>();
+            builder.Services.AddTransient<EditPlayerCommandHandler>();
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<MainPage>();
 
