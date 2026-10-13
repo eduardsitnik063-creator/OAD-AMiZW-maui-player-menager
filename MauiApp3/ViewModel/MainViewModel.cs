@@ -90,48 +90,41 @@ namespace MauiApp3.ViewModel
             LoadPlayers();
         }
         private void EditPlayer()
-{
+        {
     // Sprawdzenie Id gracza
-    if (!int.TryParse(PlayerId, out int playerId) || playerId <= 0)
-    {
-        SearchResult = "Podaj poprawne ID gracza.";
-        return;
-    }
+            if (!int.TryParse(PlayerId, out int playerId) || playerId <= 0)
+            {
+                SearchResult = "Podaj poprawne ID gracza.";
+                return;
+            }
 
     // Sprawdzenie nazwy
-    if (string.IsNullOrWhiteSpace(PlayerName))
-    {
-        SearchResult = "Nazwa gracza nie może być pusta.";
-        return;
-    }
+            if (string.IsNullOrWhiteSpace(PlayerName))
+            {
+                SearchResult = "Nazwa gracza nie może być pusta.";
+                return;
+            }
 
     // Sprawdzenie poziomu
-    if (!int.TryParse(PlayerLevel, out int playerLevel) || playerLevel < 0)
-    {
-        SearchResult = "Podaj poprawny poziom gracza.";
-        return;
-    }
+            if (!int.TryParse(PlayerLevel, out int playerLevel) || playerLevel < 0)
+            {
+                SearchResult = "Podaj poprawny poziom gracza.";
+                return;
+            }
 
     // Utworzenie polecenia edycji
-    EditPlayerCommand command = new EditPlayerCommand(
-        playerId,
-        PlayerName.Trim(),
-        playerLevel
-    );
+            EditPlayerCommand command = new EditPlayerCommand(
+            playerId,
+            PlayerName.Trim(),
+            playerLevel
+            );
 
     // Przekazanie polecenia do handlera
-    bool updated = _editPlayerCommandHandler.Handle(command);
-
-    if (!updated)
-    {
-        SearchResult = "Nie znaleziono gracza o podanym ID.";
-        return;
-    }
-
-    SearchResult = "Gracz został zaktualizowany.";
+            _editPlayerCommandHandler.Handle(command);
+            SearchResult = "Gracz został zaktualizowany.";
 
     // Odświeżenie listy graczy
-    LoadPlayers();
+            LoadPlayers();
 }
         private void FindPlayer()
         {

@@ -39,6 +39,10 @@
                 FontSize="24"
                 FontAttributes="Bold"/>
             <Entry
+                Placeholder="Id gracza"
+                Keyboard="Numeric"
+                Text="{Binding PlayerId}"/>
+            <Entry
                 Placeholder="Nazwa gracza"
                 Text="{Binding PlayerName}"/>
             <Entry
