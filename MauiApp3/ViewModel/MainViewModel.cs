@@ -23,9 +23,55 @@ namespace MauiApp3.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<Player> Players { get; } = new();
-        public string PlayerName { get; set; } = "";
-        public string PlayerLevel { get; set; } = "";
-        public string PlayerId { get; set; } = "";
+
+        private string _playerName = "";
+        public string PlayerName
+        {
+            get => _playerName;
+            set
+            {
+                if (_playerName == value)
+                {
+                    return;
+                }
+
+                _playerName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _playerLevel = "";
+        public string PlayerLevel
+        {
+            get => _playerLevel;
+            set
+            {
+                if (_playerLevel == value)
+                {
+                    return;
+                }
+
+                _playerLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _playerId = "";
+        public string PlayerId
+        {
+            get => _playerId;
+            set
+            {
+                if (_playerId == value)
+                {
+                    return;
+                }
+
+                _playerId = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _searchResult = "";
 
         public string SearchResult
@@ -120,7 +166,12 @@ namespace MauiApp3.ViewModel
             );
 
     // Przekazanie polecenia do handlera
-            _editPlayerCommandHandler.Handle(command);
+            if (!_editPlayerCommandHandler.Handle(command))
+            {
+                SearchResult = "Nie znaleziono gracza o podanym ID.";
+                return;
+            }
+
             SearchResult = "Gracz został zaktualizowany.";
 
     // Odświeżenie listy graczy

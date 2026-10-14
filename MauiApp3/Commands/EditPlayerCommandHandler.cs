@@ -1,9 +1,5 @@
 using MauiApp3.Data;
 using MauiApp3.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MauiApp3.Commands
 {
     public class EditPlayerCommandHandler
@@ -15,29 +11,19 @@ namespace MauiApp3.Commands
             _playerRepository = playerRepository;
         }
 
-        public void Handle(EditPlayerCommand command)
+        public bool Handle(EditPlayerCommand command)
         {
-            var player = _playerRepository.Players.FirstOrDefault(player => player.Id == command.Id);
-            if (player != null)
-            {
-                return;
-            };
-            Player player1 = new Player
-            {
-                Id = command.Id,
-                Name = command.Name,
-                Level = command.Level
-            };
-            _playerRepository.Players.Remove(player1);
+            Player? player = _playerRepository.Players
+                .FirstOrDefault(player => player.Id == command.Id);
 
-            Player playerupdate = new Player
+            if (player == null)
             {
-                Id = command.Id,
-                Name = command.Name,
-                Level = command.Level
-            };
-           
-            _playerRepository.Players.Add(playerupdate);
+                return false;
+            }
+
+            player.Name = command.Name;
+            player.Level = command.Level;
+            return true;
         }
     }
 }
