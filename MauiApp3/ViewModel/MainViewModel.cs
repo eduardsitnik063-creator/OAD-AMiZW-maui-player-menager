@@ -166,7 +166,7 @@ namespace MauiApp3.ViewModel
             );
 
     // Przekazanie polecenia do handlera
-            if (!_editPlayerCommandHandler.Handle(command))
+            _editPlayerCommandHandler.Handle(command);
             {
                 SearchResult = "Nie znaleziono gracza o podanym ID.";
                 return;

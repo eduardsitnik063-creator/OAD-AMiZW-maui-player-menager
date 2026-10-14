@@ -11,19 +11,19 @@ namespace MauiApp3.Commands
             _playerRepository = playerRepository;
         }
 
-        public bool Handle(EditPlayerCommand command)
+        public void Handle(EditPlayerCommand command)
         {
-            Player? player = _playerRepository.Players
-                .FirstOrDefault(player => player.Id == command.Id);
-
-            if (player == null)
+            var player = _playerRepository.Players.FirstOrDefault(player => player.Id == command.Id);
+            if (player != null)
             {
-                return false;
+                return;
             }
-
-            player.Name = command.Name;
-            player.Level = command.Level;
-            return true;
+            Player playerupdate = new Player
+            {
+                Id = command.Id,
+                Name = command.Name,
+                Level = command.Level,
+            };
         }
     }
 }
